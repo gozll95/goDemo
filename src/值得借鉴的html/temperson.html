@@ -1,0 +1,104 @@
+<section class="content">
+	<div class="space-4"></div>
+    <br/>
+
+      <div class="row">
+        <div class="col-xs-12">
+
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">选择联系人</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+            </div>
+            <!-- /.box-header -->
+            <form id="itemForm" class="form-horizontal ajax-form" method="post" action="{{urlfor "LinecomController.Temper"}}">
+            <input type="hidden" name="com_id" value="{{.company.Id}}" />
+            <div class="box-body">   
+				<table id="dynamicTable" class="table table-bordered table-striped">
+                    <caption>开发侧</caption>
+					<thead>
+					<tr>
+                        <th>产品</th>
+						<th>联系人</th>
+                        <th>操作</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr class="success">
+							<td>
+                                <select name="prodid" class="btn btn-success" id="prodid">
+                                    <option value="0">选择产品</option>
+                                    {{range $k, $v := .productList}}
+                                    <option value="{{$v.Id}}">{{$v.Name}}</option>
+                                    {{end}}
+                                </select>
+                            </td>
+							<td>
+                                <span id="prodperson">
+                                    
+                                    <small class="label label-success"><i class="fa"></i>选择联系人</small>
+                                </span>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-sm btn-info">增加</button>
+                            </td>
+						</tr>					
+					</tbody>
+				</table>
+            </div>
+            </form>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+    
+</section>
+
+
+<script language="javascript"> 
+
+$(function () {
+    $("#prodid").change(function(){ //当第一个下拉列表变动内容时第二个下拉列表将会显示
+        $("#prodperson").show(); 
+        var prodId=$(this).val(); //获取Select选择的Value 
+
+ 
+        if(null!= prodId && ""!=prodId && prodId != 0){ 
+            $.getJSON("{{urlfor "LineatomicController.GetProdPersons"}}", {prodId:prodId}, function (out) {            
+                    if(out.list==null){
+                            options="<small class=\"label label-success\"><i class=\"fa\"></i>无相关联系人</small>"
+                            $("#prodperson").html(options); 
+                            $("#prodperson").show();
+                    }else{
+                        var options=""; 
+                        if(out.list.length>0){ 
+                                for (v in out.list) {
+                                    options+="<label class=\"checkbox-inline\">";
+                                    options+="<input type=\"checkbox\" name=\"lines\" value="+out.list[v].Id+">"+"<small class=\"label label-success\"><i class=\"fa\"></i>"+out.list[v].UserName+"</small>";    
+                                    options+="</label>";
+                                } 
+                                $("#prodperson").html(options); 
+
+                        } 
+                        else if(out.list.length<=0){ 
+                                alert('oldboy');
+                                $("#prodperson").hide(); 
+                        }
+                    }
+                   
+            }); 
+        } 
+        else{  
+             options="<small class=\"label label-success\"><i class=\"fa\"></i>选择联系人</small>"
+             $("#prodperson").html(options); 
+             $("#prodperson").show(); 
+        } 
+    }); 
+   
+});
+
+</script> 

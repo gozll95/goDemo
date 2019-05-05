@@ -1,0 +1,46 @@
+<tr> 
+<td align="right" width="30%"><span class="red">*</span>短信类型：</td> 
+<td align="left"> 
+<select name='city' id='first'> 
+<option value='-1'>==请选择类型==</option> 
+<#list typeList as t> 
+<option value='${t.id}'>${t.name}</option> 
+</#list> 
+</select> 
+   
+<span id="second"> 
+<select id="area" name="msgTypeId"> 
+</select> 
+</span> 
+</td> 
+</tr>
+
+
+
+<script language="javascript"> 
+$(function(){ 
+$("#second").hide(); //初始化的时候第二个下拉列表隐藏 
+$("#first").change(function(){ //当第一个下拉列表变动内容时第二个下拉列表将会显示 
+var parentId=$("#first").val(); 
+if(null!= parentId && ""!=parentId){ 
+$.getJSON("http://localhost/msg/getSecondTypesJson",{id:parentId},function(myJSON){ 
+var options=""; 
+if(myJSON.length>0){ 
+options+="<option value=''>==请选择类型==</option>"; 
+for(var i=0;i<myJSON.length;i++){ 
+options+="<option value="+myJSON[i].id+">"+myJSON[i].name+"</option>"; 
+} 
+$("#area").html(options); 
+$("#second").show(); 
+} 
+else if(myJSON.length<=0){ 
+$("#second").hide(); 
+} 
+}); 
+} 
+else{ 
+$("#second").hide(); 
+} 
+}); 
+}); 
+</script> 

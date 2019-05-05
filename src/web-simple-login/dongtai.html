@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="keywords" content="白菜编辑部">
+<title>白菜编辑部</title>
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+   <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+   <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style type="text/css">
+</style>
+
+
+</head>
+<body>
+	<body><button id="addform"></button></body>
+</body>
+</html>
+
+
+
+<script type="text/javascript">
+$(function(){
+   $("#addform").click(function(){
+         var form = $("<form></form>");
+         var select = $("<select></select>");
+         var option1 = $("<option>1</option");
+          var option2 = $("<option>2</option");
+           var option3 = $("<option>3</option");
+           select.append(option1);
+           select.append(option2);
+           select.append(option3);
+           var input  = $("<input type='text'/>");
+           form.append(select);
+           form.append(input);
+           $("body").append(form);
+   })
+    
+   })
+</script>

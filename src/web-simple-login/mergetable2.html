@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>行合并</title>
+
+        <style type="text/css">
+            table
+              {
+              border-collapse:collapse;
+
+              }
+
+            table, td, th
+              {
+              border:1px solid black;
+              text-align:center;
+              }
+
+             input{
+                border:0;
+             }
+        </style>
+
+        <script type="text/javascript">
+            function merge(tableId,col){
+                var tr = document.getElementById(tableId);
+                for(var i=1; i<tr.rows.length; i++){                //表示数据内容的第二行
+                    if(tr.rows[i].cells[col].innerHTML == tr.rows[i - 1].cells[col].innerHTML){//col代表列
+                        t = i-1;
+                        while(tr.rows[i].cells[col].innerHTML == tr.rows[t].cells[col].innerHTML){
+                            tr.rows[i].cells[col].style.display="none";
+                            if(tr.rows[t].cells[col].rowSpan <= (i-t)){  
+                                tr.rows[t].cells[col].rowSpan +=1;      //设置前一行的rowspan+1
+                            }
+                            i++;
+                        }
+                    }               
+                }
+            }
+
+
+
+        </script>
+
+    </head>
+
+    <body>
+        <form>
+            <table id="table1">
+                <thead>
+                    <tr >
+                        <td rowspan=2 id="listId">number 1</td>
+                        <td rowspan=2>number 2 </td>
+                        <td rowspan=2>number 3</td>
+                        <td colspan=3>number 4</td>
+                        <td rowspan=2>number 5</td>
+                        <td colspan=2>number 6</td>
+                        <td rowspan=2>number 7</td>                 
+                    </tr>
+
+                    <tr>
+                        <td>list 1</td>
+                        <td>list 2</td>
+                        <td>list 3</td>
+                        <td>list 4</td>
+                        <td>list 5</td>                 
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td><input type="text" value="12"/></td>
+                        <td><input type="text" value="item 1"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>                       
+                    </tr>
+
+                    <tr>
+                        <td><input type="text" value="12"/></td>
+                        <td><input type="text" value="item 1"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>                       
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="12"/></td>
+                        <td><input type="text" value="item 1"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>                       
+                    </tr>
+
+                    <tr>
+                        <td><input type="text" value="12"/></td>
+                        <td><input type="text" value="item 1"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>                       
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="12"/></td>
+                        <td><input type="text" value="item 1"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>                       
+                    </tr>
+
+                    <tr>
+                        <td><input type="text" value="12"/></td>
+                        <td><input type="text" value="item 2"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>                       
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="12"/></td>
+                        <td><input type="text" value="item 1"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>                       
+                    </tr>
+
+                    <tr>
+                        <td><input type="text" value="12"/></td>
+                        <td><input type="text" value="item 1"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>
+                        <td><input type="text"/></td>                       
+                    </tr>
+
+                <tbody>
+
+            </table>
+
+
+            <input   type="button"     value="merge 1" onclick="merge('table1','0')"/>
+            <input   type="button"      value="merge 2" onclick="merge('table1','1')"/>
+
+        </form>
+    </body>
+</html>

@@ -1,0 +1,39 @@
+varEnablem is map[Projectver:a Basedir:/a/$Configdir Configdir:/a/$Bindir Bindir:a]
+k1= Basedir
+v1= /a/$Configdir
+k2= Basedir
+k2= Configdir
+Basedir   Configdir   true
+Basedir     Configdir true
+k2= Bindir
+Basedir   Bindir   false
+k2= Projectver
+Basedir   Projectver   false
+k1= Configdir
+v1= /a/$Bindir
+k2= Configdir
+k2= Bindir
+Configdir   Bindir   true
+Configdir     Bindir true
+k2= Projectver
+Configdir   Projectver   false
+k2= Basedir
+Configdir   Basedir   false
+k1= Bindir
+v1= a
+k2= Bindir
+k2= Projectver
+Bindir   Projectver   false
+k2= Basedir
+Bindir   Basedir   false
+k2= Configdir
+Bindir   Configdir   false
+k1= Projectver
+v1= a
+k2= Bindir
+Projectver   Bindir   false
+k2= Projectver
+k2= Basedir
+Projectver   Basedir   false
+k2= Configdir
+Projectver   Configdir   false

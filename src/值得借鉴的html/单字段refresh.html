@@ -1,0 +1,24 @@
+<script>
+$(function() {
+	$('.build-status-1').attr('disabled', true);
+	$('.build_status').each(function () {
+		if ($(this).data('status') == 0) {
+			$(this).html('<i class="ace-icon fa fa-spinner fa-spin orange bigger-125"></i> 构建中...</span>');
+			get_status($(this).data('id'));
+		}
+	});
+});
+
+function get_status(task_id) {
+	$.getJSON("{{urlfor "TaskController.GetStatus"}}", {id: task_id}, function (out) {
+		if (out.status == 0) {
+			setTimeout("get_status("+task_id+")", 1000);
+		} else if (out.status == -1) {
+			$('#status-' + task_id).html('<i class="ace-icon fa fa-times bigger-110 red"></i>');
+			alert('构建失败：' + out.msg);
+		} else {
+			$('#status-' + task_id).html('<i class="ace-icon fa fa-check bigger-110 green"></i>');
+		}
+	});
+}
+</script>

@@ -1,0 +1,520 @@
+<section class="content">
+	<div class="space-4"></div>
+    <input type="hidden" name="atomidLineId" value="{{.atomicLine.Id}}" />
+    <br/>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-success">
+                <div class="box-header with-border box-purchase">
+                    <h3 class="box-title text-info">当前条目信息</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="collapse"><i class="fa fa-minus"></i></button>     
+                    </div>
+                </div>
+
+                <div id="demo" class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>公司</th>
+                                    <th>产品</th>
+                                    <th>机房</th>
+                                    <th>线路</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="success">
+                                        <td>{{.company.Name}}</td>
+                                        <td>{{.atomicLine.ProductName}}</td>
+                                        <td>{{.atomicLine.EroomName}}</td>
+                                        <td>{{.atomicLine.LineName}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-warning">
+                <div class="box-header with-border box-purchase">
+                    <h3 class="box-title text-info">编辑条目联系人</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="item_type" class="col-sm-2 control-label">标签</label>
+                            <div class="col-sm-4">    
+                                <div class="radio-inline">
+                                    <label>
+                                        <input type="radio" name="item_type" id="item_type" value="1" {{if eq .atomicLine.LabelId 0}}checked{{end}}>
+                                        使用模板
+                                    </label>
+                                </div>
+                                <div class="radio-inline">
+                                    <label>
+                                        <input type="radio" name="item_type" id="item_type" value="2" {{if eq .atomicLine.LabelId 1}}checked{{end}}>
+                                        自定义
+                                    </label>
+                                </div>
+                            </div>
+                            <br/>
+                            <hr/>
+
+                            <!--当前匹配的模板-仅仅用于显示-->
+                            <div id="currentTmp" type="hidden">
+                                <table id="datatable" class="table table-bordered table-striped">
+                                    <caption><b>当前匹配的模板</b></caption>
+                                    <thead>
+                                    <tr>
+                                        <th>角色</th>
+                                        <th>联系人</th>
+                                        <th>等级</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{range $k, $v := .atomicAllTmpPersons}}
+                                        <tr class="warning">
+                                            <td>
+                                                {{if eq $v.RoleId 1}}
+                                                <!--开发侧-->
+                                                <small class="label label-warning"><i class="fa"></i>开发侧</small>
+                                                {{end}} 
+                                                {{if eq $v.RoleId 2}}
+                                                <!--用户侧-->
+                                                <small class="label label-success"><i class="fa"></i>用户侧</small>
+                                                {{end}}
+                                                {{if eq $v.RoleId 3}}
+                                                <!--运维侧-->
+                                                <small class="label label-primary"><i class="fa"></i>运维侧</small>
+                                                {{end}}
+                                            </td>
+                                            <td>
+                                                {{$v.UserName}}
+                                            </td>
+                                            <td>
+                                                {{if eq $v.LevelId 0}}
+                                                尚未选择联系人等级
+                                                {{else}}
+                                                第{{$v.LevelId}}联系人
+                                                {{end}}
+
+                                            </td>
+                                        </tr>
+                                        {{end}}					
+                                    </tbody>
+                                </table>
+                                <button id="tmpbutton" type="button" class="btn btn-success"><i class="ace-icon fa fa-check bigger-110"></i>使用模板</button>
+                            </div>
+    
+                            <!--自定义-编辑=增加-->
+                            <div id="selfEdit" type="hidden">
+                                <form id="AddDevForm" class="form-horizontal ajax-form" method="post" action="{{urlfor "LinecomController.Atomicperson"}}">
+                                <!--<input type="hidden" name="com_id" value="{{.company.Id}}" />-->
+                                    <table id="dynamicProdTable" class="table table-bordered table-striped">
+                                        <caption>开发侧</caption>
+                                        <thead>
+                                        <tr>
+                                            <th>联系人</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="warning">
+                                                <td>
+                                                    <select name="prodperson_ids" multiple="" class="btn btn-primary" id="prodperson_ids" data-placeholder="选择联系人..." style="width:120px;height:20px;"> 
+                                                        {{range $k, $v := .devPersons}}
+                                                        <option value="{{$v.Id}}">{{$v.UserName}}</option>
+                                                        {{end}}
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-sm btn-info">增加</button>
+                                                </td>
+                                            </tr>					
+                                        </tbody>
+                                    </table>
+                                </form>
+
+                                <form id="AddUserForm" class="form-horizontal ajax-form" method="post" action="{{urlfor "LinecomController.Atomicperson"}}">
+                                <!--<input type="hidden" name="com_id" value="{{.company.Id}}" />-->
+                                    <table id="dynamicUserTable" class="table table-bordered table-striped">
+                                        <caption>用户侧</caption>
+                                        <thead>
+                                        <tr>
+                                            <th>联系人</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="warning">
+                                                <td>
+                                                    <select name="userperson_ids" multiple="" class="btn btn-primary" id="userperson_ids" data-placeholder="选择联系人..." style="width:120px;height:20px;"> 
+                                                        {{range $k, $v := .userPersons}}
+                                                        <option value="{{$v.Id}}">{{$v.UserName}}</option>
+                                                        {{end}}
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-sm btn-info">增加</button>
+                                                </td>
+                                            </tr>					
+                                        </tbody>
+                                    </table>
+                                </form>
+
+                                <form id="AddOpsForm" class="form-horizontal ajax-form" method="post" action="{{urlfor "LinecomController.Atomicperson"}}">
+                                    <!--<input type="hidden" name="com_id" value="{{.company.Id}}" />-->
+                                        <table id="dynamicOpsTable" class="table table-bordered table-striped">
+                                            <caption>运维侧</caption>
+                                            <thead>
+                                            <tr>
+                                                <th>联系人</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="warning">
+                                                    <td>
+                                                        <select name="opsperson_ids" multiple="" class="btn btn-primary" id="opsperson_ids" data-placeholder="选择联系人..." style="width:120px;height:20px;"> 
+                                                            {{range $k, $v := .opsPersons}}
+                                                            <option value="{{$v.Id}}">{{$v.UserName}}</option>
+                                                            {{end}}
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-sm btn-info">增加</button>
+                                                    </td>
+                                                </tr>					
+                                            </tbody>
+                                        </table>
+                                </form>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-warning">
+                <div class="box-header with-border box-purchase">
+                    <h3 class="box-title text-info">当前条目的联系人</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <!--该原子线路当前联系 -->
+                            <div id="currentDisplay">
+                                <table id="datatable1" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>角色</th>
+                                        <th>联系人</th>
+                                        <th>等级</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{range $k, $v := .atomicLine.ContactPersonList}}
+                                        <tr class="info">
+                                            <td>
+                                                {{if eq $v.RoleId 1}}
+                                                <!--开发侧-->
+                                                <small class="label label-warning"><i class="fa"></i>开发侧</small>
+                                                {{end}} 
+                                                {{if eq $v.RoleId 2}}
+                                                <!--用户侧-->
+                                                <small class="label label-success"><i class="fa"></i>用户侧</small>
+                                                {{end}}
+                                                {{if eq $v.RoleId 3}}
+                                                <!--运维侧-->
+                                                <small class="label label-primary"><i class="fa"></i>运维侧</small>
+                                                {{end}}
+                                            </td>
+                                            <td>
+                                                {{$v.UserName}}
+                                            </td>
+                                            <td>
+                                                {{if eq $v.LevelId 0}}
+                                                尚未选择联系人等级
+                                                {{else}}
+                                                第{{$v.LevelId}}联系人
+                                                {{end}}
+                                            </td>
+                                        </tr>
+                                        {{end}}					
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!--可编辑的当前联系人-->
+                            <div id="currentSelfEdit">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success">批量操作</button>
+                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="javascript:;" onclick="javascript:batch('delete');"><i class="icon-trash"></i>删除</a></li>
+                                        </ul>
+                                </div> 
+                                <br/>
+                                <br/>
+
+                                <form id="selfForm" class="form-horizontal ajax-form" method="post" action="{{urlfor "LinecomController.Atomicperson"}}">
+
+                                    <table id="selfdatatable" class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th width="20"><input type="checkbox" name="chkall" value="1"></td>
+                                            <th>角色</th>
+                                            <th>联系人</th>
+                                            <th>等级</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{range $k, $v := .atomicLine.ContactPersonList}}
+                                            <tr class="info">
+                                                <td><input type="checkbox" name="ids" value="{{$v.Id}}" /></td>
+                                                <td>
+                                                    {{if eq $v.RoleId 1}}
+                                                    <!--开发侧-->
+                                                    <small class="label label-warning"><i class="fa"></i>开发侧</small>
+                                                    {{end}} 
+                                                    {{if eq $v.RoleId 2}}
+                                                    <!--用户侧-->
+                                                    <small class="label label-success"><i class="fa"></i>用户侧</small>
+                                                    {{end}}
+                                                    {{if eq $v.RoleId 3}}
+                                                    <!--运维侧-->
+                                                    <small class="label label-primary"><i class="fa"></i>运维侧</small>
+                                                    {{end}}
+                                                </td>
+                                                <td>
+                                                    {{$v.UserName}}
+                                                </td>
+                                                <td>
+                                                    <select name="levelid" class="btn btn-success" id="levelid">
+                                                        <option value="{{$v.Id}} 0" >选择优先级</option>
+                                                        <option value="{{$v.Id}} 1" {{if eq $v.LevelId 1}}selected{{end}}>第一联系人</option>
+                                                        <option value="{{$v.Id}} 2" {{if eq $v.LevelId 2}}selected{{end}}>第二联系人</option>
+                                                        <option value="{{$v.Id}} 3" {{if eq $v.LevelId 3}}selected{{end}}>第三联系人</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            {{end}}					
+                                        </tbody>
+                                    </table>
+                                    <input type="button" class="btn btn-success" value="合并角色" onclick="merge('selfdatatable','1')"/>
+                            
+                                    <button type="submit" class="btn btn-success"><i class="ace-icon fa fa-check bigger-110"></i>更新等级</button>
+                                    <button type="reset" class="btn btn-success"><i class="ace-icon fa fa-refresh bigger-110"></i>重置</button>
+        
+                                </form>
+                            </div>
+
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script>
+function merge(tableId,col){
+    var tr = document.getElementById(tableId);
+    for(var i=1; i<tr.rows.length; i++){                //表示数据内容的第二行
+        if(tr.rows[i].cells[col].innerHTML == tr.rows[i - 1].cells[col].innerHTML){//col代表列
+            t = i-1;
+            while(i<tr.rows.length &&  tr.rows[i].cells[col].innerHTML == tr.rows[t].cells[col].innerHTML){
+                tr.rows[i].cells[col].style.display="none";
+                if(tr.rows[t].cells[col].rowSpan <= (i-t)){ 
+                  tr.rows[t].cells[col].rowSpan +=1;      //设置前一行的rowspan+1
+                }
+                i++;
+            }
+        }               
+    }
+}
+
+$(function() {
+
+    var ch = $("input[type='radio']:checked").val();
+    if(ch==1){
+            //模板视图下-currentTmp显示匹配模板
+            $('#currentTmp').removeClass('hide'); 
+            //模板视图下-selfEdit隐藏自定义增加功能
+			$('#selfEdit').addClass('hide');
+            //模板视图下-原子线路联系人当前信息仅显示
+            $('#currentDisplay').removeClass('hide'); 
+            //模板视图下-原子线路联系人当前信息编辑
+            $('#currentSelfEdit').addClass('hide'); 
+    }else{
+            //模板视图下-currentTmp显示匹配模板
+            $('#currentTmp').addClass('hide'); 
+            //模板视图下-selfEdit隐藏自定义增加功能
+			$('#selfEdit').removeClass('hide');
+            //模板视图下-原子线路联系人当前信息仅显示
+            $('#currentDisplay').addClass('hide'); 
+            //模板视图下-原子线路联系人当前信息编辑
+            $('#currentSelfEdit').removeClass('hide'); 
+    };
+
+	$(":radio[name='item_type']").click(function () {
+		if ($(this).val() == 1) {
+            //模板视图下-currentTmp显示匹配模板
+            $('#currentTmp').removeClass('hide'); 
+            //模板视图下-selfEdit隐藏自定义增加功能
+			$('#selfEdit').addClass('hide');
+            //模板视图下-原子线路联系人当前信息仅显示
+            $('#currentDisplay').removeClass('hide'); 
+            //模板视图下-原子线路联系人当前信息编辑
+            $('#currentSelfEdit').addClass('hide'); 
+		} else {
+            //模板视图下-currentTmp显示匹配模板
+            $('#currentTmp').addClass('hide'); 
+            //模板视图下-selfEdit隐藏自定义增加功能
+			$('#selfEdit').removeClass('hide');
+            //模板视图下-原子线路联系人当前信息仅显示
+            $('#currentDisplay').addClass('hide'); 
+            //模板视图下-原子线路联系人当前信息编辑
+            $('#currentSelfEdit').removeClass('hide'); 
+		}
+	});
+
+      $("input[name='chkall']").click(function () {
+          if ($(this).prop('checked')) {
+              $("input[name='ids']").prop("checked", true);
+          }else{
+              $("input[name='ids']").prop("checked", false);
+          }
+      });
+
+});
+
+function batch(action) {
+	if ($("input[name='ids']:checked").size() < 1) {
+	     alert("请选择要操作的任务");
+	} else {
+        confirm("真的要删除么？");
+		var url = "{{urlfor "LinecomController.BatchContactPersons" "atomicLineId" .atomidLineId}}";
+		$.post(url + "&action=" + action , $("#selfForm").serialize(), function(out) {
+			if (out.status != 0) {
+                alert(out.msg);
+				// $(".alert").text(out.msg);
+				// $(".alert").show();
+			} else {
+				window.location.reload();
+			}
+		}, "json");
+	}
+	return false;
+}
+
+// 按下模板提交按钮
+$('#tmpbutton').on('click', function() {
+    var url = "{{urlfor "LineatomicController.TmpCoverAtomicPerson"}}";
+    var atomicLineId = $("input[name='atomidLineId']").val();
+
+    var url2 = url+"?"+"id="+atomicLineId;
+
+    $('#deleteModal').modal({
+        remote: url2
+    });
+});
+
+$('#AddDevForm').on('submit', function() {
+        var url = "{{urlfor "LinecomController.Atomicperson" "type" "dev" "atomicLineId" .atomidLineId}}";
+        var data = $("#AddDevForm").serialize();
+
+        $.post(url, data, function (out) {
+			if (out.status != MSG_OK) {
+                alert(out.msg);
+			} else {
+				window.location.reload();
+			}
+		}, "json");
+		return false;
+});
+$('#AddUserForm').on('submit', function() {
+        var url = "{{urlfor "LinecomController.Atomicperson" "type" "user" "atomicLineId" .atomidLineId}}";
+        var data = $("#AddUserForm").serialize();
+
+        $.post(url, data, function (out) {
+			if (out.status != MSG_OK) {
+                alert(out.msg);
+			} else {
+				window.location.reload();
+			}
+		}, "json");
+		return false;
+});
+$('#AddOpsForm').on('submit', function() {
+        var url = "{{urlfor "LinecomController.Atomicperson" "type" "ops" "atomicLineId" .atomidLineId}}";
+        var data = $("#AddOpsForm").serialize();
+
+        $.post(url, data, function (out) {
+			if (out.status != MSG_OK) {
+                alert(out.msg);
+			} else {
+				window.location.reload();
+			}
+		}, "json");
+		return false;
+});
+$('#selfForm').on('submit', function() {
+        var url = "{{urlfor "LinecomController.Atomicperson" "type" "update" "atomicLineId" .atomidLineId}}";
+        var data = $("#selfForm").serialize();
+
+        $.post(url, data, function (out) {
+			if (out.status != MSG_OK) {
+                alert(out.msg);
+			} else {
+				window.location.reload();
+			}
+		}, "json");
+		return false;
+});
+
+$('#prodperson_ids').chosen({
+        allow_single_deselect:true,
+        max_selected_options:3  //当select为多选时，最多选择个数
+});
+
+
+$('#userperson_ids').chosen({
+        allow_single_deselect:true,
+        max_selected_options:3  //当select为多选时，最多选择个数
+}); 
+
+$('#opsperson_ids').chosen({
+        allow_single_deselect:true,
+        max_selected_options:3  //当select为多选时，最多选择个数
+});
+
+
+</script>

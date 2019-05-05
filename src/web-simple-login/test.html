@@ -1,0 +1,40 @@
+
+<div>
+    <div class="row">
+    </div>
+	<div class="row">
+		<div class="col-md-12 column">
+		<div class="alert alert-warning alert-dismissible hide" role="alert"></div>
+
+<form class="form-horizontal ajax-form" method="post" action="{{urlfor "AppverController.Del"}}">
+    <input type="hidden" name="del_id" value="{{.delid}}" />
+	<div class="form-group">
+		<label for="delete_reason" class="col-sm-2 control-label">删除原因</label>
+		<div class="col-sm-3">
+			<input type="text" class="form-control" id="delete_reason" name="delete_reason">
+		</div>
+	</div>
+
+	<div class="hr hr-16 hr-dotted"></div>
+
+	<div class="hr hr-16 hr-dotted"></div>
+	
+	<div class="hr hr-16 hr-dotted"></div>
+
+	<div class="clearfix form-actions">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button type="submit" class="btn btn-primary"><i class="ace-icon fa fa-check bigger-110"></i>提交</button>
+			<a href="{{urlfor "AppverController.List"}}" class="btn btn-default"><i class="ace-icon fa fa-reply bigger-110"></i>返回</a>
+		</div>
+	</div>
+	
+
+</form>
+
+		</div>
+	</div>
+
+</div>
+
+
+

@@ -1,0 +1,51 @@
+<div id="loader"></div> 
+<div id="module_list"> 
+   <input type="hidden" id="orderlist" /> 
+   <div class="modules" title="1"> 
+      <h3 class="m_title">Module:1</h3> 
+      <p>1</p> 
+   </div> 
+   ... 
+</div> 
+
+
+
+  <script>
+$(function(){ 
+    $(".m_title").bind('mouseover',function(){ 
+        $(this).css("cursor","move") 
+    }); 
+     
+    var $show = $("#loader");  
+    var $orderlist = $("#orderlist"); 
+    var $list = $("#module_list"); 
+     
+    $list.sortable({ 
+        opacity: 0.6, //设置拖动时候的透明度 
+        revert: true, //缓冲效果 
+        cursor: 'move', //拖动的时候鼠标样式 
+        handle: '.m_title',  //可以拖动的部位，模块的标题部分 
+        update: function(){ 
+             var new_order = []; 
+             $list.children(".modules").each(function() { 
+                new_order.push(this.title); 
+             }); 
+             var newid = new_order.join(','); 
+             var oldid = $orderlist.val(); 
+             $.ajax({ 
+                type: "post", 
+                url: "update.php", //服务端处理程序 
+                data: { id: newid, order: oldid },   //id:新的排列对应的ID,order：原排列顺序 
+                beforeSend: function() { 
+                     $show.html("<img src='load.gif' /> 正在更新"); 
+                }, 
+                success: function(msg) { 
+                     //alert(msg); 
+                     $show.html(""); 
+                } 
+             }); 
+        } 
+    }); 
+}); 
+
+ </script>

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI 拖动（Draggable） - 约束运动</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+  <script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+ <!--  <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css"> -->
+  <style>
+    *{
+      margin:0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .container{
+      border: 1px solid black;
+      margin-bottom: 10px;
+      margin-top: 10px;
+    }
+    .container:after{
+      content: "";
+      display: block;
+      clear: both;
+    }
+    .drag{
+      width: 200px;
+      height: 200px;
+      float: left;
+    }
+    ul li {
+      list-style: none;
+    }
+    .innerdiv{
+      padding: 10px;
+      height: 100%;
+    }
+    .innerdiv2{
+        background: grey;
+        height: 100%;
+      }
+    #draggable1{
+      width: 400px;
+      height: 400px;
+    }
+  .move{
+    width: 80px;
+    height: 40px;
+    background: blanchedalmond;
+  }
+  </style>
+  <script>
+  $(function() {
+var fixHelper = function(e, ui) {  
+    //console.log(ui)   
+    ui.children().each(function() {  
+    $(this).width($(this).width());  //在拖动时，拖动行的cell（单元格）宽度会发生改变。在这里做了处理就没问题了   
+  });  
+    return ui;  
+}; 
+
+$(function() {
+  $( "#sortable tbody").sortable({
+    cursor: "move",
+    helper: fixHelper,                  //调用fixHelper
+    axis:"y",
+    start:function(e, ui){
+    ui.helper.css({"background":"#fff"})     //拖动时的行，要用ui.helper
+    return ui;
+},
+sort:function(e, ui){
+array = [];                     
+select_item = ui.item; //当前拖动的元素
+var select_id = select_item.attr("id"); 
+select_sort = select_item.attr("sort"); //当前元素的顺序
+//alert(select_item);
+place_item = $(this).find('tr').filter('.ui-sortable-placeholder').next('tr');//新位置下的下一个元素
+place_sort = place_item.attr('sort');
+
+place_sx = parseInt(place_sort);
+select_sx = parseInt(select_sort);
+
+if(select_sx > place_sx){ //说明是 向上移动
+//array.push(select_id);
+temp = place_sort;
+place_sx = select_sort;//最大
+select_sx = temp;//最小
+flag = false;
+}else{ //向下移动
+    place_sort = $(this).find('tr').filter('.ui-sortable-placeholder').prev('tr').attr('sort');
+    place_sx = parseInt(place_sort);
+    flag = true;
+}
+},
+    stop:function(e, ui){
+    //ui.item.removeClass("ui-state-highlight"); //释放鼠标时，要用ui.item才是释放的行   
+    //发送请求，对sort字段进行修改
+    //alert(ui.item.attr("id"));//可以拿到id
+    //alert(ui.position.top);//可以拿到id
+    var temp = "";
+    #{list items:eventTypeList, as:'n'}
+    var sort = parseInt(${n.sort});
+    if(sort >= select_sx && sort <= place_sx){
+
+    if(sort == parseInt(select_sort)){//当前拖拽的元素 向上拖拽，当前元素放在数组第一个，向下，放在数组最后一个
+        if(flag){//向下 - 按顺序来
+            temp = ${n.id};
+        }else{//向上排序
+            array.splice(0,0,${n.id});
+        }
+    }else{
+         array.push(${n.id});
+    }
+    }
+#{/list}
+if(flag){
+    array.splice(place_sx-select_sx,0,temp); 
+}
+
+if(window.confirm("确定这么排吗？")){
+    $.ajax({
+    url:'/EventAction/sortTable',
+    type:'POST',
+    async: false,
+    data:{'ids':array, selectSx:select_sx, placeSx:place_sx},
+            datatype:'json',
+            success:function(data){
+            alert(data.data);
+            window.location.reload();
+        },
+            error:function(){
+                alert('保存排序异常');
+            }
+        });
+    }else{
+        $(this).sortable( 'cancel' );
+      }
+
+        return ui;  
+      },
+     });
+    $( "#sortable" ).disableSelection();
+});
+  });
+  </script>
+</head>
+<body>
+<table class="table table-striped table-bordered table-hover" id="sortable">
+    <thead>
+        <tr>
+            <th style="text-align: center;">序号</th>
+            <th style="text-align: center;">名称</th>
+            <th style="text-align: center;">类型代码</th>
+            <th style="text-align: center;">含义</th>
+            <th style="text-align: center;">是否显示</th>
+            <th style="text-align: center;">操作</th>
+        </tr>
+    </thead>
+<tbody>
+    #{list items:eventTypeList, as:'n'}
+        #{if n.status ==1}
+        <tr class="item" aid="${n.id}" id="${n.id}" sort="${n.sort}">
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>显示</td>
+            <td><button class="btn btn-primary edit" tid="${n.id}">修改</button></td>
+        </tr>
+    #{/if}
+#{/list}
+</tbody>
+</table>
+</body>
+</html>

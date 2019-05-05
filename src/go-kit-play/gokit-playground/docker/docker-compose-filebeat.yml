@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  filebeat:
+    image: fiunchinho/docker-filebeat
+    environment:
+      LOGSTASH_HOST: 172.20.20.10
+      LOGSTASH_PORT: 5044
+      INDEX: logstash
+    volumes:
+      - $PWD/lorem-logging/filebeat/filebeat.yml:/filebeat.yml
+      - $PWD/log/lorem/golorem.log:/golorem.log

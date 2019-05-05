@@ -1,0 +1,47 @@
+        <section class="content">
+
+
+
+          <div class="box box-info">
+            <div class="box-header">
+              <h3 class="box-title">联系人等级列表</h3>
+              <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <table id="datatableline" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>线路名称</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {{range $k, $v := .lineList}}
+                  <tr class="info">
+                    <td>{{$v.Id}}</td>
+                    <td>{{$v.Name}}</td>
+                  </tr>
+                    {{end}}				
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+
+
+
+
+        </section>
+
+        <section class="col-lg-6">
+
+
+
+
+
+
+
+        </section>

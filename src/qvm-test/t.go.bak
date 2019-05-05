@@ -1,0 +1,32 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type m map[string]interface{}
+
+type mm []m
+
+func main() {
+	var m1 m
+	var m2 m
+	var mms mm
+	m1 = make(map[string]interface{})
+	m2 = make(map[string]interface{})
+	m1["ServerId"] = "i-2ze0o0vnaqm1zcueycfw"
+	m1["Port"] = 8080
+	m1["Weight"] = 100
+	m1["ServerType"] = "Master"
+	m2 = m1
+	mms = append(mms, m1)
+	mms = append(mms, m2)
+
+	b, err := json.Marshal(mms)
+	if err != nil {
+		fmt.Println("json err:", err)
+	}
+	fmt.Println(string(b))
+
+}

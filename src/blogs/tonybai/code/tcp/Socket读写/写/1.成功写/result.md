@@ -1,0 +1,2 @@
+client端在Write时并未判断Write的返回值。
+所谓"成功写"指的就是Write调用返回的n与预期要写入的数据长度相等,且error=nil。这是我们在调用Write时遇到的最常见的情形。

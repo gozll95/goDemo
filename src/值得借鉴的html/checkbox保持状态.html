@@ -1,0 +1,33 @@
+golang:
+
+	chkmap := make(map[string]string)
+	for _, v := range role.PermList {
+		chkmap[v.Key] = "checked"
+	}
+	if role.ProjectIds != "" {
+		pids := strings.Split(role.ProjectIds, ",")
+		for _, pid := range pids {
+			chkmap[pid] = "checked"
+		}
+	}
+
+
+
+
+
+		<div class="form-group">
+		<label class="col-sm-2 control-label">访问权限</label>
+		<div class="col-sm-10">
+			{{range $key, $list := .permList}}
+				<div><label class="control-label bolder blue">{{i18n $.lang $key}} <input type="checkbox" name="all" value="1" data-mod="{{$key}}"></label></div>
+				{{range $k, $perm := $list}}
+				<div class="checkbox-inline mod-{{$perm.Module}}">
+					<label>
+					<input type="checkbox" name="perms" value="{{$perm.Key}}" {{map_get $.chkmap $perm.Key}}>
+					<span class="lbl">{{i18n $.lang $perm.Key}}</span>
+					</label>
+				</div>
+				{{end}}
+			{{end}}
+		</div>
+	</div>

@@ -1,0 +1,22 @@
+// 标签列表
+func (this *TaskController) GetTags() {
+	projectId, _ := this.GetInt("project_id")
+
+	list, err := service.RepositoryService.GetTags(projectId, 10)
+	this.checkError(err)
+
+	out := make(map[string]interface{})
+	out["list"] = list
+	this.jsonResult(out)
+}
+
+
+
+
+
+	$.getJSON("{{urlfor "TaskController.GetTags"}}", {project_id: {{.projectId}}}, function (out) {
+		$("select[name='start_ver'],select[name='end_ver']").attr('disabled', false);
+		for (v in out.list) {
+			$("select[name='start_ver'],select[name='end_ver']").append('<option value="'+out.list[v]+'">'+out.list[v]+'</option>');
+		}
+	});

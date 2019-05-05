@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI 拖动（Draggable） - 约束运动</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+  <script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+ <!--  <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css"> -->
+  <style>
+    *{
+      margin:0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .container{
+      border: 1px solid black;
+      margin-bottom: 10px;
+      margin-top: 10px;
+    }
+    .container:after{
+      content: "";
+      display: block;
+      clear: both;
+    }
+    .drag{
+      width: 200px;
+      height: 200px;
+      float: left;
+    }
+    ul li {
+      list-style: none;
+    }
+    .innerdiv{
+      padding: 10px;
+      height: 100%;
+    }
+    .innerdiv2{
+        background: grey;
+        height: 100%;
+      }
+    #draggable1{
+      width: 400px;
+      height: 400px;
+    }
+  .move{
+    width: 80px;
+    height: 40px;
+    background: blanchedalmond;
+  }
+  </style>
+  <script>
+  $(function() {
+    var arr = '';
+    var sort = $( ".sortable" ).sortable({
+        handle: ".move",
+        opacity: 0.7,
+        delay: 150,
+        cursor:'move',
+        revert: true,
+        stop:function(){
+ //记录sort后的id顺序数组
+        var arr = $( ".sortable" ).sortable('toArray');
+            console.log(arr);
+//拖拽后利用localStorage记录顺序
+            localStorage.arr = arr;
+        }
+    });
+    var localSt = localStorage.arr;
+    //如果有localst记录则，按照这个进行排序元素
+    if(localSt){
+        var resArr = localSt.split(',');
+        var resUl = $('ul');
+        //li 数组
+        for(var i = 0;i < resArr.length;i++){
+            resUl.append($("#" + resArr[i]));
+        }
+    }
+  });
+  </script>
+</head>
+<body>
+   <div class="container">
+     <ul class="sortable">
+         <li id="draggable2" class="drag">
+            <div class="innerdiv">
+               <div class="innerdiv2">
+                 <div class="move">放在这里</div> 
+                 只有鼠标放在小长方形里才能移动
+               </div>
+           </div>
+         </li>
+         <li id="draggable3" class="drag">
+             <div class="innerdiv">
+               <div class="innerdiv2">
+                <div class="move">放在这里</div> 
+               </div>
+         </div>
+         </li> 
+          <li id="draggable4" class="drag">
+              <div class="innerdiv">
+                 <div class="innerdiv2">
+                  <div class="move">放在这里</div> 
+                </div>
+              </div>
+         </li> 
+         <li id="draggable5" class="drag">
+              <div class="innerdiv">
+                 <div class="innerdiv2">
+                  <div class="move">放在这里</div> 
+                  </div>
+              </div>
+         </li> 
+         <li id="draggable6" class="drag">
+              <div class="innerdiv">
+                 <div class="innerdiv2">
+                  <div class="move">放在这里</div> 
+               </div>
+         </div>
+          <li id="draggable1" class="drag">
+             <div class="innerdiv">
+                <div class="innerdiv2">
+                 <div class="move">放在这里</div> 
+               </div>
+             </div>
+          </li>
+         </li> 
+     </ul>
+   </div>
+</body>
+</html>
