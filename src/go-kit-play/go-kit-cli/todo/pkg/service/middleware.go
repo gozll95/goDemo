@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	io "go-kit-cli/todo/pkg/io"
+	io "go-kit-play/go-kit-cli/todo/pkg/io"
 
 	log "github.com/go-kit/kit/log"
 )

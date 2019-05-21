@@ -3,9 +3,9 @@ package service
 import (
 	"flag"
 	"fmt"
-	endpoint "go-kit-cli/todo/pkg/endpoint"
-	http "go-kit-cli/todo/pkg/http"
-	service "go-kit-cli/todo/pkg/service"
+	endpoint "go-kit-play/go-kit-cli/todo/pkg/endpoint"
+	http "go-kit-play/go-kit-cli/todo/pkg/http"
+	service "go-kit-play/go-kit-cli/todo/pkg/service"
 	"net"
 	http1 "net/http"
 	"os"

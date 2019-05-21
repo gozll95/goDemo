@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	"go-kit-cli/todo/pkg/db"
-	"go-kit-cli/todo/pkg/io"
+	"go-kit-play/go-kit-cli/todo/pkg/db"
+	"go-kit-play/go-kit-cli/todo/pkg/io"
 
 	"gopkg.in/mgo.v2/bson"
 )

@@ -2,6 +2,11 @@
 package service
 
 import (
+	http1 "go-kit-play/go-kit-cli/todo/pkg/http"
+	service "go-kit-play/go-kit-cli/todo/pkg/service"
+
+	endpoint "go-kit-play/go-kit-cli/todo/pkg/endpoint"
+
 	endpoint1 "github.com/go-kit/kit/endpoint"
 	log "github.com/go-kit/kit/log"
 	prometheus "github.com/go-kit/kit/metrics/prometheus"
@@ -9,9 +14,6 @@ import (
 	http "github.com/go-kit/kit/transport/http"
 	group "github.com/oklog/oklog/pkg/group"
 	opentracinggo "github.com/opentracing/opentracing-go"
-	endpoint "go-kit-cli/todo/pkg/endpoint"
-	http1 "go-kit-cli/todo/pkg/http"
-	service "go-kit-cli/todo/pkg/service"
 )
 
 func createService(endpoints endpoint.Endpoints) (g *group.Group) {

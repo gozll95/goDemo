@@ -2,8 +2,8 @@ package endpoint
 
 import (
 	"context"
-	io "go-kit-cli/todo/pkg/io"
-	service "go-kit-cli/todo/pkg/service"
+	io "go-kit-play/go-kit-cli/todo/pkg/io"
+	service "go-kit-play/go-kit-cli/todo/pkg/service"
 
 	endpoint "github.com/go-kit/kit/endpoint"
 )
