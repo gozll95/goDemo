@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 package main
 
 import "fmt"
@@ -66,3 +67,6 @@ func sysSignalHandleDemo() {
 		}
 	}
 }
+=======
+package main 
+>>>>>>> Stashed changes
