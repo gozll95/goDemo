@@ -1,13 +1,15 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+)
 
-type OurCustomerTransport struct {
+type OurCustomTransport struct {
 	Transport http.RoundTripper
 }
 
-func (t *OurCustomerTransport) transport() http.RoundTripper {
-	if t.transport != nil {
+func (t *OurCustomTransport) transport() http.RoundTripper {
+	if t.Transport != nil {
 		return t.Transport
 	}
 	return http.DefaultTransport
@@ -20,6 +22,16 @@ func (t *OurCustomTransport) RoundTrip(req *http.Request) (*http.Response, error
 	return t.transport().RoundTrip(req)
 }
 
-func (t *OurCustomerTransport) Client() *http.Client {
+func (t *OurCustomTransport) Client() *http.Client {
 	return &http.Client{Transport: t}
+}
+
+func main() {
+	t := &OurCustomTransport{
+		// ...
+	}
+	c := t.Client()
+	resp,
+		err := c.Get("http://example.com")
+	// ...
 }
