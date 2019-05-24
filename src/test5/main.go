@@ -1,25 +1,28 @@
 package main
 
-import "net/http"
+import "fmt"
 
-type OurCustomerTransport struct {
-	Transport http.RoundTripper
-}
+func main() {
+	var (
+		routineCtl chan int    = make(chan int, 20)
+		feedback   chan string = make(chan string, 10000)
 
-func (t *OurCustomerTransport) transport() http.RoundTripper {
-	if t.transport != nil {
-		return t.Transport
+		msg      string
+		allwork  int
+		finished int
+	)
+
+	for i := 0; i < 1000; i++ {
+		routineCtl <- 1
+		allwork++
+		go Afunction(routineCtl, feedback)
 	}
-	return http.DefaultTransport
 }
 
-func (t *OurCustomTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	//处理一些事情...
-	//发起HTTP请求
-	//添加一些域到req.Header中
-	return t.transport().RoundTrip(req)
-}
-
-func (t *OurCustomerTransport) Client() *http.Client {
-	return &http.Client{Transport: t}
+func Afunction(routineControl chan int, feedback chan string) {
+	defer func() {
+		<-routineControl
+		feedback <- "finish"
+	}()
+	fmt.Println("a")
 }

@@ -86,3 +86,14 @@ mutexprofile
 
 
 ### 标准库
+
+
+https://studygolang.com/articles/1425
+
+https://github.com/dustin/go-broadcast
+
+https://rogpeppe.wordpress.com/2009/12/01/concurrent-idioms-1-broadcasting-values-in-go-with-linked-channels/
+
+
+### golang课程
+/Users/flower/workspace/goDemo/src/github.com/sherlockhua/goproject/

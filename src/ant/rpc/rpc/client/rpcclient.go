@@ -29,3 +29,7 @@ func test() {
 	replyCall := <-divCall.Done
 
 }
+
+/*
+ * rpc 调用 有同步/异步 两种方式
+ */

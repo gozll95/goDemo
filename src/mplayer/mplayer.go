@@ -1,22 +1,25 @@
 package main
 
 import (
-	"book-player/library"
 	"bufio"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
+
+	"mplayer/mlib"
+	"mplayer/mp"
 )
 
-var lib *library.MusicManager
+//音乐管理模块  全局变量声明与赋值
+var lib *mlib.MusicManager = mlib.NewMusicManager()
 var id int = 1
-var ctr1, signal chan int
+var ctrl, signal chan int
 
+//功能函数
 func handleLibCommands(tokens []string) {
 	switch tokens[1] {
 	case "list":
-
 		for i := 0; i < lib.Len(); i++ {
 			e, _ := lib.Get(i)
 			fmt.Println(i+1, ":", e.Name, e.Artist, e.Source, e.Type)
@@ -24,19 +27,25 @@ func handleLibCommands(tokens []string) {
 	case "add":
 		if len(tokens) == 6 {
 			id++
-			lib.Add(&library.MusicEntry{strconv.Itoa(id),
-				tokens[2], tokens[3], tokens[4], tokens[5]})
+			m := &mlib.MusicEntry{
+				strconv.Itoa(id),
+				tokens[2],
+				tokens[3],
+				tokens[4],
+				tokens[5],
+			}
+			lib.Add(m)
 		} else {
-			fmt.Println("USAGE: lib add <name><artist><source><type>")
+			fmt.Println("USAGE: lib add <name> <artist> <source> <type>")
 		}
 	case "remove":
 		if len(tokens) == 3 {
-			//lib.RemoveByName(tokens[2])
+			lib.RemoveByName(tokens[2])
 		} else {
 			fmt.Println("USAGE: lib remove <name>")
 		}
 	default:
-		fmt.Println("Unrecognized lib command:", tokens[1])
+		fmt.Println("Unrecognized lib command:")
 	}
 }
 
@@ -51,19 +60,21 @@ func handlePlayCommand(tokens []string) {
 		fmt.Println("The music", tokens[1], "does not exist.")
 		return
 	}
-	//	mp.Play(e.Source, e.Type, ctrl, signal)
+
+	mp.Play(e.Source, e.Type)
 }
 
+//由 main 函数作为程序入口点启动
 func main() {
 	fmt.Println(`
-	Enter following commands to control the player:
-	lib list -- View the existing music lib
-	lib add <name><artist><source><type> -- Add a music to the music lib
-	lib remove <name> -- Remove the specified music from the lib
-	play <name> -- Play the specified music
-	`)
+Enter following commands to control the player:
+lib list -- View the existing music lib
+lib add <name> <artist> <source> <type> -- Add a music to the music lib
+lib remove <name> -- Remove the specified music from the lib
+play <name> -- Play the specified music
+`)
 
-	lib = library.NewMusicManager()
+	//lib := mlib.NewMusicManager()
 	r := bufio.NewReader(os.Stdin)
 
 	for {
@@ -75,6 +86,7 @@ func main() {
 		if line == "q" || line == "e" {
 			break
 		}
+
 		tokens := strings.Split(line, " ")
 
 		if tokens[0] == "lib" {
@@ -85,5 +97,4 @@ func main() {
 			fmt.Println("Unrecognized command:", tokens[0])
 		}
 	}
-
 }

@@ -1,13 +1,13 @@
 package mp
 
-import (
-	"fmt"
-)
+import "fmt"
 
+//音乐播放模块 接口
 type Player interface {
 	Play(source string)
 }
 
+//音乐位置及类型
 func Play(source, mtype string) {
 	var p Player
 
@@ -17,7 +17,7 @@ func Play(source, mtype string) {
 	case "WAV":
 		p = &WAVPlayer{}
 	default:
-		fmt.Println("Unsupported music type", mtype)
+		fmt.Println("unsupported music type", mtype)
 		return
 	}
 	p.Play(source)
