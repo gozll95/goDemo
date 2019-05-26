@@ -97,3 +97,19 @@ https://rogpeppe.wordpress.com/2009/12/01/concurrent-idioms-1-broadcasting-value
 
 ### golang课程
 /Users/flower/workspace/goDemo/src/github.com/sherlockhua/goproject/
+
+环形列表能做什么
+
+
+## sync.Map的实现原理
+
+## etcd
+
+
+### log-agent
+
+# 连接池的实现
+https://zhuanlan.zhihu.com/p/53685253
+
+
+# qbus

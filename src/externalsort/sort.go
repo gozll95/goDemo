@@ -13,7 +13,7 @@ func main() {
 	// writeToFile(p, "small.out")
 	// printFile("small.out")
 
-	p := createPipeline("../pipelinedemo/large.in", 800000000, 4)
+	p := createPipeline("../pipelinedemo/small.in", 512, 4)
 	writeToFile(p, "large.out")
 	printFile("large.out")
 }

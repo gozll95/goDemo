@@ -1,28 +1,19 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
 
 func main() {
-	var (
-		routineCtl chan int    = make(chan int, 20)
-		feedback   chan string = make(chan string, 10000)
-
-		msg      string
-		allwork  int
-		finished int
-	)
-
-	for i := 0; i < 1000; i++ {
-		routineCtl <- 1
-		allwork++
-		go Afunction(routineCtl, feedback)
+	sender := bufio.NewScanner(os.Stdin)
+	for sender.Scan() {
+		fmt.Println(sender.Text())
 	}
 }
 
-func Afunction(routineControl chan int, feedback chan string) {
-	defer func() {
-		<-routineControl
-		feedback <- "finish"
-	}()
-	fmt.Println("a")
-}
+
+rd := bufio.NewReader(r)
+if _, err := fmt.Fscanf(rd, "%d\n", &p.Id); err != nil {
+name, err := rd.ReadString('\n')
